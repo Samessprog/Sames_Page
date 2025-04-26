@@ -6,9 +6,11 @@ on:
 
 jobs:
   lint:
-    name: ESLint
+    name: ESLint (frontend)
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -22,13 +24,14 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-
         run: npm run lint
 
   type-check:
-    name: TypeScript
+    name: TypeScript (frontend)
     runs-on: ubuntu-latest
-
+    defaults:
+      run:
+        working-directory: frontend
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -42,5 +45,4 @@ jobs:
         run: npm ci
 
       - name: Run TypeScript compiler (noEmit)
-
         run: npm run type-check
