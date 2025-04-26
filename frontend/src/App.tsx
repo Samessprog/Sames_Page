@@ -5,8 +5,6 @@ import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
-  const message: string = 42;
-  const k = 2;
 
   return (
     <>
