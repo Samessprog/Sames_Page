@@ -1,11 +1,11 @@
-name: CI
+name: frontend
 
 on:
   pull_request:
 
 jobs:
   lint:
-    name: ESLint (frontend)
+    name: ESLint
     runs-on: ubuntu-latest
     defaults:
       run:
