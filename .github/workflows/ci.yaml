@@ -5,6 +5,7 @@ on:
 
 jobs:
   lint:
+    name: ESLint
     runs-on: ubuntu-latest
     defaults:
       run:
