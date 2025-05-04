@@ -1,23 +1,24 @@
-FROM node:20-alpine AS builder
+    FROM node:23-alpine AS builder
 
-WORKDIR /app
+    WORKDIR /app
+    
+    COPY package*.json ./
+    
+    RUN npm install #ci            
+    
+    COPY . .
 
-COPY package.json package-lock.json ./
+    RUN npm run build        
+    
+    FROM node:23-alpine     
+    
+    WORKDIR /app
 
-RUN npm ci
+    COPY --from=builder /app/dist ./dist   
+    
+    RUN npm i -g serve
 
-COPY . .
+    EXPOSE 3000
 
-RUN npm run build    
-
-FROM node:20-alpine AS runner
-
-WORKDIR /app
-
-RUN npm install -g serve
-
-COPY --from=builder /app/dist ./dist
-
-EXPOSE 3000
-
-CMD ["serve", "-s", "dist", "-l", "3000"]
+    CMD ["serve", "dist"]
+    
