@@ -1,4 +1,3 @@
-
 name: Frontend
 
 on:
@@ -46,12 +45,10 @@ jobs:
           node-version: "18"
       - run: npm ci
 
-      - name: Start Vite dev server in background
-        run: npm run dev &
-      - name: Wait for dev server
-        run: npx wait-on http://localhost:3000
-
-      - name: Run Cypress via official action
+      - name: Run Vite + Cypress
         uses: cypress-io/github-action@v5
         with:
-          command: npx cypress run
+          start: npm run dev
+          wait-on: "http://localhost:3000"
+          wait-on-timeout: 60000
+          command: npm run cypress:run
