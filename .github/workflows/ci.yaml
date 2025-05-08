@@ -1,4 +1,4 @@
-name: frontend
+name: Frontend
 
 on:
   pull_request:
@@ -11,37 +11,61 @@ jobs:
       run:
         working-directory: frontend
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Run ESLint
-        run: npm run lint
+      - run: npm ci
+      - run: npm run lint
 
   type-check:
-    name: TypeScript (frontend)
+    name: TypeScript
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: frontend
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - run: npm ci
+      - run: npm run type-check
+
+  cypress:
+    name: Cypress E2E Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Run TypeScript compiler (noEmit)
-        run: npm run type-check
+      - name: Run Vite + Cypress
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: ./frontend
+          project: ./frontend
+          install: false
+          start: npm run dev
+          wait-on: http://localhost:3000
+          wait-on-timeout: 120000
+          browser: chrome
+          command: npm run cypress:run
