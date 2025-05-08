@@ -16,8 +16,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "i18next": "^25.0.1",
+    "i18next-browser-languagedetector": "^8.0.5",
+    "i18next-http-backend": "^3.0.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-i18next": "^15.5.1",
     "storybook": "^8.6.12"
   },
   "devDependencies": {
