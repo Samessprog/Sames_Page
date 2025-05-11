@@ -1,24 +1,11 @@
-    FROM node:23-alpine AS builder
+FROM node:18-alpine AS builder
 
-    WORKDIR /app
-    
-    COPY package*.json ./
-    
-    RUN npm install #ci            
-    
-    COPY . .
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
 
-    RUN npm run build        
-    
-    FROM node:23-alpine     
-    
-    WORKDIR /app
-
-    COPY --from=builder /app/dist ./dist   
-    
-    RUN npm i -g serve
-
-    EXPOSE 3000
-
-    CMD ["serve", "dist"]
-    
+FROM nginx:alpine AS runner
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 3000

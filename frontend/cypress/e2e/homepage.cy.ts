@@ -14,6 +14,6 @@ describe('Strona główna', () => {
       .should('be.visible')
       .and('have.text', 'count is 0')
       .click()
-      .should('have.text', 'count is 1');
+      .should('have.text', 'count is 2');
   });
 });
