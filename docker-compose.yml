@@ -1,28 +1,14 @@
-version: "3.9"
-
 services:
   frontend:
     build:
       context: ./frontend
-    container_name: myfrontend
-    restart: unless-stopped
-    expose:
-      - "3000"
-    networks:
-      - web
+    container_name: frontend
 
   nginx:
     build:
       context: ./nginx
-    container_name: mynginx
-    restart: unless-stopped
+    container_name: nginx
     ports:
       - "80:80"
     depends_on:
       - frontend
-    networks:
-      - web
-
-networks:
-  web:
-    driver: bridge
